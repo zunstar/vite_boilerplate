@@ -1,0 +1,121 @@
+---
+description: "Vite + React 프론트엔드 표준 아키텍처 규칙"
+globs: ["**/*"]
+alwaysApply: true
+
+# Architecture Overview
+
+/*
+- 이 프로젝트는 React(Vite) 기반의 SPA(싱글 페이지 애플리케이션) 프론트엔드 구조를 따릅니다.
+- 컴포넌트 기반 개발을 원칙으로 하며, Atomic Design 등 계층적 컴포넌트 구조를 권장합니다.
+- 주요 폴더 구조 예시:
+  - src/components: 재사용 가능한 UI 컴포넌트
+  - src/pages: 라우트 단위 페이지 컴포넌트
+  - src/hooks: 커스텀 훅
+  - src/assets: 이미지, 폰트, 스타일 등 정적 리소스
+  - src/utils: 유틸리티 함수 및 헬퍼
+  - src/store: 상태 관리(예: Context, Zustand, Redux 등)
+  - src/routes: 라우팅 설정(react-router-dom 등)
+- 상태 관리는 React Context, Zustand, Redux 등 공식/검증된 라이브러리만 사용합니다.
+- 라우팅은 react-router-dom 등 표준 라이브러리를 사용합니다.
+- API 통신은 axios, fetch 등 표준 라이브러리만 사용하며, 비동기 처리는 반드시 에러 핸들링을 포함해야 합니다.
+- 모든 비즈니스 로직은 컴포넌트 외부(훅, 유틸 등)로 분리하여 재사용성과 테스트 용이성을 높입니다.
+- 폴더 및 파일 네이밍은 일관성 있게 카멜케이스/케밥케이스를 사용합니다.
+- 환경변수는 .env 파일로 관리하며, 민감 정보는 절대 커밋하지 않습니다.
+*/
+
+The project follows a single-page application structure using React with Vite.
+Component-based development is the core principle, with a recommended hierarchical structure such as Atomic Design.
+Use verified libraries only for state management (Context, Zustand, Redux) and routing (react-router-dom).
+All business logic must reside outside of UI components—for example, in hooks or utilities—for better testability and reusability.
+Error handling is mandatory for all async API requests (axios/fetch).
+Consistent use of camelCase or kebab-case is enforced for file and folder naming.
+Environment variables must be managed via `.env` and never committed if sensitive.
+
+# Benefits
+
+/*
+- 명확한 관심사 분리와 재사용성 극대화
+- 유지보수성과 확장성 향상
+- 팀 협업 및 코드 일관성 강화
+- 테스트 용이성 및 품질 보장
+- 빠른 개발 및 배포 환경 구축
+*/
+
+Clear separation of concerns and better reusability.
+Improved maintainability and scalability.
+Reinforces team collaboration and code consistency.
+Supports testability and quality assurance.
+Accelerates development and deployment workflows.
+
+# Domain-Oriented Architecture
+
+/*
+- 도메인 중심 아키텍처를 따르며, 각 도메인은 자체 모델, 서비스, 컴포넌트, 훅을 포함합니다.
+- 공통 관심사(로깅, 에러 처리, 권한 등)는 common/에 집중 관리합니다.
+- 확장성과 테스트 용이성을 위해 모든 기능은 명확히 분리된 모듈로 구성합니다.
+- config/ 하위에 환경별 설정을 분리하여 dev/staging/prod 관리가 용이하도록 합니다.
+*/
+
+Follow a domain-oriented architecture, where each domain module contains its own models, services, hooks, and components.
+Common concerns such as logging, error handling, and guards are centralized in the `common/` directory.
+Environment-specific settings are separated into the `config/` directory.
+
+# Development Practices
+
+/*
+- pnpm을 기본 패키지 매니저로 사용합니다.
+- 코드 품질 유지를 위해 ESLint, Prettier, TypeScript strict 모드를 기본 적용합니다.
+- 유닛 테스트는 `@testing-library/react` 또는 `Vitest`로 작성하며, 커버리지 80% 이상을 목표로 합니다.
+- 커밋 전 테스트, 린트, 포맷 확인을 위한 pre-commit 훅을 구성합니다.
+- e2e 테스트는 필요 시 `Playwright` 또는 `Cypress`를 사용합니다.
+*/
+
+Use `pnpm` as the default package manager.
+Apply ESLint, Prettier, and TypeScript strict mode as baseline configurations.
+Write unit tests using `@testing-library/react` or `Vitest`, aiming for 80%+ coverage.
+Use pre-commit hooks to check linting, formatting, and tests.
+For e2e testing, use `Playwright` or `Cypress` as needed.
+
+# Directory Structure
+
+/*
+- 아래는 기본적인 프로젝트 디렉토리 구조 예시입니다.
+*/
+
+src/
+├── components/           # Shared UI components
+├── pages/                # Route-level page components
+├── hooks/                # Custom React hooks
+├── assets/               # Static assets like images and fonts
+├── utils/                # Utility functions
+├── store/                # Global state (Zustand, Redux, etc.)
+├── routes/               # Routing configurations
+├── modules/              # Domain-specific modules
+│   └── auth/             # Example domain module
+│       ├── components/
+│       ├── services/
+│       ├── hooks/
+│       └── types.ts
+├── common/               # Cross-cutting concerns
+│   ├── guards/
+│   ├── interceptors/
+│   ├── error-handlers/
+│   └── constants/
+├── config/               # Environment-based configuration
+│   ├── dev.ts
+│   ├── staging.ts
+│   └── production.ts
+└── main.tsx              # Application entry point
+
+# Notes
+
+/*
+- 모든 폴더와 파일은 기능 또는 도메인 중심으로 구성하며, 명확한 책임과 역할을 가져야 합니다.
+- 비즈니스 로직은 UI에서 분리하며, 테스트 가능한 순수 함수로 구성하는 것을 권장합니다.
+- 이 구조는 병렬 개발 및 팀 간 협업을 촉진합니다.
+*/
+
+All folders and files should follow feature-based or domain-based organization.
+Business logic must be separated from UI components and preferably written as pure testable functions.
+This structure facilitates parallel development and improves team collaboration.

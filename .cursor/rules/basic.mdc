@@ -1,0 +1,99 @@
+---
+description: "Base Basic (React + Vite)"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+/*
+	# [정확성과 신뢰성]
+	- 모든 코드 및 컴포넌트는 공식 문서(React, Vite, TypeScript 등) 기반으로 작성해야 합니다.
+	- 불명확하거나 미검증된 구현 방식은 “확인 필요” 또는 “검토 필요”로 명시해야 합니다.
+	- 추측 기반의 코드, 설명은 절대 금지하며 정확한 근거 기반의 코드만 허용됩니다.
+	- 모든 코드 샘플은 실행 가능해야 하며, 컴포넌트 단위 테스트 커버리지는 80% 이상을 목표로 합니다.
+	- 입력값 검증, fallback UI, 경계 오류 처리는 필수로 포함해야 합니다.
+
+	# [문서화]
+	- 모든 컴포넌트, 커스텀 훅, 유틸 함수는 명확한 역할 정의 및 JSDoc 스타일 주석을 포함해야 합니다.
+	- 공용 컴포넌트 및 스타일 유틸은 Storybook 또는 문서 페이지에 포함되어야 합니다.
+
+	# [보안]
+	- .env를 통한 환경변수 사용을 철저히 지키고, API 키나 민감 정보는 코드에 직접 노출되지 않도록 합니다.
+	- 프론트엔드에서 직접 민감한 연산(인증, 결제 로직 등)을 수행하지 않도록 구조를 분리합니다.
+	- 최신 브라우저 보안 정책(CSP, XSS 방지, CORS 등)을 고려한 구조로 작성되어야 합니다.
+
+	# [UI/UX 품질]
+	- 접근성(a11y)을 고려한 마크업 사용을 우선하며, 시멘틱 HTML 사용을 기본으로 합니다.
+	- 반응형 디자인, 다양한 뷰포트에 대한 대응을 포함해야 합니다.
+	- 로딩 상태, 오류 상태, 빈 상태(Empty State)를 명확히 처리해야 합니다.
+	- UI 인터랙션은 사용자 기대와 일치하도록 구성합니다 (예: 클릭, 포커스, 키보드 탐색 등).
+
+	# [테스트 및 품질관리]
+	- 단위 테스트는 `@testing-library/react` 또는 `Vitest` 기준으로 작성합니다.
+	- E2E 테스트가 필요한 경우 `Playwright` 또는 `Cypress`를 사용합니다.
+	- ESLint, Prettier, TypeScript strict 설정을 기본으로 적용합니다.
+	- CI 환경에서 빌드/테스트/포맷 체크 자동화는 필수입니다.
+
+	# [코드 구조와 유지보수]
+	- Atomic Design 또는 Layered Architecture 기반으로 구성하며, 기능 단위 디렉토리 분리 권장
+	- 전역 상태 관리 시에는 필요 최소한으로 하고, Recoil, Zustand, Redux 등은 일관된 패턴으로 제한적으로 사용
+	- 컴포넌트 재사용성을 고려한 작성 및 props 최소화를 추구
+	- 마법 숫자(hardcoded values) 금지 및 상수 파일 관리
+
+	# [언어 및 일관성]
+	- 모든 출력, 주석, 문서화는 한글로 작성하되 코드 내부 명령어, 설정 값은 영어를 사용합니다.
+	- 이름 짓기(Naming)는 명확하고 일관성 있게 하며, 컴포넌트/함수/파일 네이밍 규칙을 문서화합니다.
+
+	# [지속적 개선]
+	- 피드백을 신속하게 반영하고, 필요한 경우 명확하게 업데이트 및 개선 항목을 문서화합니다.
+	- 기술 부채는 이슈 트래커에 기록하고 주기적으로 정리합니다.
+
+	# [규칙 적용 우선순위]
+	- 이 파일의 영문 규칙 내용이 최우선이며, 번역은 참고용입니다.
+	- 규칙 충돌 시 영어 원본을 기준으로 해석합니다.
+*/
+
+[Accuracy and Reliability]
+- All code and components must be based on official documentation (React, Vite, TypeScript, etc.).
+- Any unclear or unverified implementation must be marked with “verification required” or “review needed”.
+- Avoid speculative or assumption-based code; only evidence-based and verified implementations are allowed.
+- All code samples must be executable, and aim for at least 80% test coverage in component unit tests.
+- Input validation, fallback UI, and boundary error handling are mandatory.
+
+[Documentation]
+- All components, custom hooks, and utility functions must include clear role definitions and JSDoc-style comments.
+- Shared components and style utilities must be documented via Storybook or documentation pages.
+
+[Security]
+- Use `.env` files strictly for environment variables; never expose secrets or API keys in code.
+- Avoid handling sensitive logic (auth, payments, etc.) directly in frontend; isolate such logic appropriately.
+- Follow current browser security best practices (CSP, XSS prevention, CORS, etc.).
+
+[UI/UX Quality]
+- Prioritize accessibility (a11y) with semantic HTML and proper ARIA roles.
+- Ensure responsive design and proper viewport support.
+- Clearly handle loading, error, and empty states in UI.
+- Align UI interactions with user expectations (e.g., click, focus, keyboard navigation).
+
+[Testing and Quality Assurance]
+- Use `@testing-library/react` or `Vitest` for unit tests.
+- Use `Playwright` or `Cypress` for E2E tests if applicable.
+- Enforce ESLint, Prettier, and TypeScript strict mode by default.
+- Automate build/test/format checks in CI workflows.
+
+[Code Structure and Maintainability]
+- Follow Atomic Design or Layered Architecture, and organize by feature or domain when possible.
+- Limit use of global state management to essential cases only (Recoil, Zustand, Redux).
+- Strive for reusability and minimal props in components.
+- Avoid magic numbers and manage constants centrally.
+
+[Language and Consistency]
+- All output, comments, and documentation must be written in Korean, while code values and settings remain in English.
+- Naming conventions must be clear and consistent; document component/function/file naming rules.
+
+[Continuous Improvement]
+- Feedback must be reflected promptly, and updates or improvements clearly documented.
+- Track technical debt and address it regularly.
+
+[Rule Precedence]
+- This English version takes precedence over any translated version.
+- In case of conflict, refer to the English original.
