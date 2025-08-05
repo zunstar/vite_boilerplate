@@ -21,15 +21,25 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
           set -e
-          cd ~/saimple
+          cd ~/sample
+          # 최신 코드 가져오기
           git pull origin main
+          # Node 환경 준비 (NVM)
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
           nvm use
+          # pnpm 환경 설정
           export PNPM_HOME="$HOME/.local/share/pnpm"
           export PATH="$PNPM_HOME:$PATH:$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node)/bin"
+          # 의존성 설치 및 빌드
           pnpm install --frozen-lockfile
-          pnpm build
-          pm2 reload saimple || pm2 start dist/main.js --name="saimple"
+          pnpm build --mode production
+          # 기존 PM2 프로세스 종료 (없으면 에러 무시)
+          pm2 delete sample || true
+          # serve 패키지 절대경로로 pm2 실행 (bash 인터프리터 지정)
+          pm2 start /home/petvers/.local/share/pnpm/serve --name sample --interpreter bash -- -s dist -l 4000
+          # PM2 현재 상태 저장 (재부팅 시 자동 실행)
           pm2 save
+          # PM2 startup 설정 (한번만 수행하면 됨)
+          pm2 startup systemd -u $USER --hp $HOME || true
         EOF
